@@ -12,7 +12,9 @@
     "prettier": "prettier --write .",
     "build:backend": "tsc",
     "build:frontend": "npm run build --prefix ./frontend",
-    "build": "tsc && npm run build:frontend"
+    "build": "tsc && npm run build:frontend",
+    "test": "jest",
+    "test:watch": "jest --watchAll"
   },
   "repository": "https://github.com/kazeemkadiri/background-remover.git",
   "license": "MIT",
@@ -33,7 +35,9 @@
     "@typescript-eslint/parser": "^7.18.0",
     "concurrently": "^8.2.2",
     "eslint": "^9.39.2",
+    "jest": "^30.3.0",
     "prettier": "3.2.5",
+    "supertest": "^7.2.2",
     "typescript": "^5.9.3"
   }
 }
