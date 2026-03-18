@@ -10,10 +10,14 @@ class BRController {
         this.brService = brService;
     }
 
-    async getRequiredData(data: {imageData: Buffer, ip: string}): Promise<void> {
+    async getRequiredData(data: {imageData: Buffer, ip: string}): Promise<{ message: string, taskId: string }> {
 
-        this.brService.doRemoveBackground(data);
+        return this.brService.doRemoveBackground(data);
+        
     }
 }
 
+const brController = new BRController(BRService.prototype);
+
+export { brController };
 export default BRController;
