@@ -1,27 +1,18 @@
 import express, { Express } from "express";
 import bgRemoverRouter from "./routes/background-remover.route";
 
-class App {
-    app: Express;
+const app: Express = express();
 
-    constructor(app: Express) {
-        this.app = app;
+app.use(express.json({ limit: '10mb' })); // To handle large base64 image data
 
-        this.setupRoutes();
+app.use('/api', bgRemoverRouter);
 
-        this.listen();
-    }
+const PORT = process.env.PORT || 3000;
 
-    public setupRoutes() {
-        // Import and use routes here
-        this.app.use('/api', bgRemoverRouter);
-    }
+app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
+});
 
-    public listen() {
-        this.app.listen(3000, () => {
-            console.log("Server running on port 3000");
-        });
-    }
-}
+(global as any).__SERVER__ = app; // Store server reference for teardown
 
-new App(express());
+export default app;
