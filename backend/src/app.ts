@@ -1,0 +1,49 @@
+import serverless from 'serverless-http';
+import fileUpload from 'express-fileupload';
+import cors from 'cors';
+
+import express, { Express } from "express";
+import bgRemoverRouter from "./routes/background-remover.route";
+
+import dotenv from 'dotenv';
+dotenv.config();
+
+const app: Express = express();
+
+app.use(cors({
+    origin: [
+        'http://localhost:3000', // Frontend development URL
+    ], // Allow all origins for testing; adjust in production
+    methods: ['GET', 'POST'],
+    allowedHeaders: ['Content-Type', 'Access-Control-Allow-Headers', 'Access-Control-Allow-Origin'],
+}));
+
+// app.use(express.json({ limit: '10mb' })); // To handle large base64 image data
+
+app.use(fileUpload({
+    limits: { fileSize: 50 * 1024 * 1024 },
+    useTempFiles: true,
+    tempFileDir: '/tmp/',
+    safeFileNames: true, 
+    preserveExtension: true
+}));
+
+app.get('/', (req, res) => {
+    res.send('Hello World from Kazeem\'s SAAS!');
+});
+
+app.use('/api', bgRemoverRouter);
+
+const PORT = 5000;
+
+app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
+});
+
+(global as any).__SERVER__ = app; // Store server reference for teardown
+
+// const handler = serverless(app); // Export the serverless handler for AWS Lambda
+
+// export { handler };
+
+export default app;

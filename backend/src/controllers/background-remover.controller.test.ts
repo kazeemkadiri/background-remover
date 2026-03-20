@@ -18,11 +18,11 @@ describe('BRController', () => {
     });
 
     it('should call getRequiredData and return the expected result', async () => {
-        const mockResponse = { message: "Processing started", taskId: "54321" };
+        const mockResponse = { message: "Processing started", transparentImage: "54321" };
 
-        jest.spyOn(brController, 'getRequiredData').mockResolvedValue(mockResponse);
+        jest.spyOn(brController, 'postRequiredData').mockResolvedValue(mockResponse);
 
-        const result = await brController.getRequiredData({ imageData: Buffer.from('test'), ip: '127.0.0.1' });
+        const result = await brController.postRequiredData({ imageData: Buffer.from('test'), ip: '127.0.0.1' });
         expect(result).toEqual(mockResponse);
     });
 });

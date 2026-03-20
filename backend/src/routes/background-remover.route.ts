@@ -6,10 +6,12 @@ const bgRemoverRouter = Router();
 
 bgRemoverRouter.post('/request-bg-removal', async (req, res, next) => {
   try {
-    const { imageData } = req.body;
+    const imageData = (req.files as any); // Assuming the file field is named 'image'
     const userIp = req.ip; // Get user IP for logging/metadata
 
-    const response = await brController.getRequiredData({imageData, ip: userIp || ""}); // Call controller method
+    console.log("Image data received, starting background removal task...", imageData.image.tempFilePath, "from IP:", userIp);
+
+    const response = await brController.postRequiredData({imageData: imageData.image.tempFilePath, ip: userIp || ""}); // Call controller method
 
     res.status(200).json(response);
   } catch (error) {

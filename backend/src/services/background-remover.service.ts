@@ -1,6 +1,6 @@
 import BRRepository from '../repositories/background-remover.repository';
 
-import axios from 'axios';
+import { removeBackground, Config } from "@imgly/background-removal-node";
 
 class BRService {
     brRepository: BRRepository;
@@ -9,21 +9,46 @@ class BRService {
         this.brRepository = brRepository;
     }
 
-    async doRemoveBackground(data: { imageData: Buffer, ip: string }): Promise<{ message: string, taskId: string }> {
+    async doRemoveBackground(data: { imageData: any, ip: string }): Promise<{ message: string, transparentImage: string }> {
         const { imageData, ip } = data;
 
-        const response = await axios.post('https://api.upsampler.com/v1/process', {
-            input: { image: imageData },
-            webhook: "https://your-domain.com/api/webhooks/upsampler", // Your listener
-            webhook_events_filter: ["completed"], // Only notify when done
-            // Custom metadata to identify the user/job later
-            metadata: { userId: ip, jobId: ip }
-        }, {
-            headers: { 'Authorization': `Bearer ${process.env.UPSAMPLER_KEY}` }
-        });
+        try {
+            console.log(`Starting background removal...`);
 
-        // Return 202 Accepted (standard for async tasks)
-        return { message: "Processing started", taskId: response.data.id };
+            // Configuration options
+            const config: any = {
+                model: 'medium', // 'small' (~40MB) or 'medium' (~80MB)
+                output: {
+                    format: 'image/png', // Must be PNG for transparency
+                    quality: 0.8,
+                    type: 'foreground' // 'foreground', 'background', or 'mask'
+                },
+                // Optional: Track download progress on first run
+                progress: (key: any, current: number, total: number) => {
+                    const percent = Math.round((current / total) * 100);
+                    console.log(`Downloading AI Assets [${key}]: ${percent}%`);
+                }
+            };
+
+            // The core function: Accept path, buffer, or URL
+            const resultBlob = await removeBackground(imageData as any, config);
+
+            // Convert the resulting Blob to a Node.js Buffer
+            const arrayBuffer = await resultBlob.arrayBuffer();
+            const buffer = Buffer.from(arrayBuffer);
+
+            // Save to local disk
+            // fs.writeFileSync(outputPath, buffer);
+
+            console.log(`✅ Success! Transparent image saved`);
+
+            return { message: "Background removal completed", transparentImage: buffer.toString('base64') };
+        } catch (error) {
+            console.error('❌ Error during processing:', error);
+
+            return { message: "Background removal completed", transparentImage: '' };
+        }
+
     }
 }
 
