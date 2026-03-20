@@ -10,7 +10,7 @@ class BRController {
         this.brService = brService;
     }
 
-    async getRequiredData(data: {imageData: Buffer, ip: string}): Promise<{ message: string, taskId: string }> {
+    async postRequiredData(data: {imageData: string, ip: string}): Promise<{ message: string, transparentImage: string }> {
 
         return this.brService.doRemoveBackground(data);
         
