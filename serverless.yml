@@ -1,0 +1,15 @@
+service: background-remover-api
+
+provider:
+  name: aws
+  runtime: nodejs20.x # Latest stable version
+  region: us-east-1
+
+functions:
+  api:
+    handler: backend/src/app.handler # Points to your exported handler in app.js
+    events:
+      - httpApi: '*'   # Catches all HTTP traffic and routes it to Express
+
+package: 
+  individually: true
