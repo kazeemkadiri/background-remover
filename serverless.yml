@@ -2,8 +2,11 @@ service: background-remover-api
 
 provider:
   name: aws
-  runtime: nodejs20.x # Latest stable version
+  runtime: nodejs22.x # Latest stable version
   region: us-east-1
+  architecture: x86_64 # CRITICAL: Binaries are OS-specific. 
+  memorySize: 2048     # ONNX needs RAM
+  # timeout: 30          # Background removal takes time
 
 functions:
   api:
@@ -12,4 +15,28 @@ functions:
       - httpApi: '*'   # Catches all HTTP traffic and routes it to Express
 
 package: 
-  individually: true
+  patterns:
+    - '!node_modules/**'
+    - '!nodejs/**'
+    - '!src/**/*.test.js' # Ignore all test files
+
+custom:
+  esbuild:
+    bundle: true
+    platform: 'node'
+    target: 'node22'
+    # 1. Tell the bundler to leave this package alone
+    external:
+      - '@imgly/background-removal-node'
+      - 'onnxruntime-node'
+    # 2. Tell the plugin to install these as real node_modules in the zip
+    installExtraArgs:
+      - '--omit=dev'
+    # 3. Use npm/yarn to handle the external install
+    packager: npm
+
+plugins:
+  - serverless-esbuild
+
+build:
+  esbuild: false
