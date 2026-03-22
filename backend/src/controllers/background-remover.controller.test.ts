@@ -22,7 +22,7 @@ describe('BRController', () => {
 
         jest.spyOn(brController, 'postRequiredData').mockResolvedValue(mockResponse);
 
-        const result = await brController.postRequiredData({ imageData: Buffer.from('test'), ip: '127.0.0.1' });
+        const result = await brController.postRequiredData({ imageData: 'test', ip: '127.0.0.1' });
         expect(result).toEqual(mockResponse);
     });
 });
