@@ -10,14 +10,9 @@ dotenv.config();
 const app: Express = express();
 
 app.use(cors({
-    origin: [
-        'http://localhost:3000', // Frontend development URL
-    ], // Allow all origins for testing; adjust in production
-    methods: ['GET', 'POST'],
-    allowedHeaders: ['Content-Type', 'Access-Control-Allow-Headers', 'Access-Control-Allow-Origin'],
+    origin: '*', // Allow all origins for testing; adjust in production
+    methods: ['GET', 'POST', 'OPTIONS'],
 }));
-
-// app.use(express.json({ limit: '10mb' })); // To handle large base64 image data
 
 app.use(fileUpload({
     limits: { fileSize: 50 * 1024 * 1024 },
@@ -27,13 +22,15 @@ app.use(fileUpload({
     preserveExtension: true
 }));
 
+app.use(express.json({ limit: '10mb' })); // To handle large base64 image data
+
 app.get('/', (req, res) => {
-    res.send('Hello World from Kazeem\'s SAAS!');
+    res.send('Hello World from Kazeem\'s SAAS!. This is the backend server for the Background Image Remover application.');
 });
 
 app.use('/api', bgRemoverRouter);
 
-const PORT = process.env.PORT ||5000;
+const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
