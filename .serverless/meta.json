@@ -7,8 +7,10 @@
       "service": "background-remover-api",
       "provider": {
         "name": "aws",
-        "runtime": "nodejs20.x",
+        "runtime": "nodejs22.x",
         "region": "us-east-1",
+        "architecture": "x86_64",
+        "memorySize": 2048,
         "stage": "dev",
         "versionFunctions": true,
         "compiledCloudFormationTemplate": {
@@ -104,18 +106,16 @@
               "Properties": {
                 "Code": {
                   "S3Bucket": "serverless-framework-deployments-us-east-1-bc9391fd-54d0",
-                  "S3Key": "serverless/background-remover-api/dev/1773953023435-2026-03-19T20:43:43.435Z/background-remover-api-api.zip"
+                  "S3Key": "serverless/background-remover-api/dev/1774105154116-2026-03-21T14:59:14.116Z/background-remover-api.zip"
                 },
                 "Handler": "backend/src/app.handler",
-                "Runtime": "nodejs20.x",
+                "Runtime": "nodejs22.x",
                 "FunctionName": "background-remover-api-dev-api",
-                "MemorySize": 1024,
+                "MemorySize": 2048,
                 "Timeout": 6,
-                "Environment": {
-                  "Variables": {
-                    "NODE_OPTIONS": "--enable-source-maps"
-                  }
-                },
+                "Architectures": [
+                  "x86_64"
+                ],
                 "Role": {
                   "Fn::GetAtt": [
                     "IamRoleLambdaExecution",
@@ -127,14 +127,14 @@
                 "ApiLogGroup"
               ]
             },
-            "ApiLambdaVersion0x9OrEmCuY9wJLe0QqDlAysFIXd4cWYsK4XJcYE": {
+            "ApiLambdaVersionj8rtoUTjFLsOHEAhSkiJGq5Ezurq7K5vp8DbOsDgFo": {
               "Type": "AWS::Lambda::Version",
               "DeletionPolicy": "Retain",
               "Properties": {
                 "FunctionName": {
                   "Ref": "ApiLambdaFunction"
                 },
-                "CodeSha256": "Ipjk35SQNVhMwEbtq1NrZWGEQK9VrAd9zrRfmZjZqug="
+                "CodeSha256": "4YM92KqYLXqIxkBSRHnW1Ras8XfxQKOBtcBc+51L9K0="
               }
             },
             "HttpApi": {
@@ -243,7 +243,7 @@
             "ApiLambdaFunctionQualifiedArn": {
               "Description": "Current Lambda function version",
               "Value": {
-                "Ref": "ApiLambdaVersion0x9OrEmCuY9wJLe0QqDlAysFIXd4cWYsK4XJcYE"
+                "Ref": "ApiLambdaVersionj8rtoUTjFLsOHEAhSkiJGq5Ezurq7K5vp8DbOsDgFo"
               },
               "Export": {
                 "Name": "sls-background-remover-api-dev-ApiLambdaFunctionQualifiedArn"
@@ -297,30 +297,51 @@
             }
           ],
           "name": "background-remover-api-dev-api",
-          "environment": {
-            "NODE_OPTIONS": "--enable-source-maps"
-          },
-          "package": {
-            "artifact": "/home/kazeem/Sandbox/personal/background-remover/.serverless/build/background-remover-api-api.zip"
-          },
-          "memory": 1024,
+          "package": {},
+          "memory": 2048,
           "timeout": 6,
-          "runtime": "nodejs20.x",
+          "runtime": "nodejs22.x",
           "vpc": {},
-          "versionLogicalId": "ApiLambdaVersion0x9OrEmCuY9wJLe0QqDlAysFIXd4cWYsK4XJcYE"
+          "versionLogicalId": "ApiLambdaVersionj8rtoUTjFLsOHEAhSkiJGq5Ezurq7K5vp8DbOsDgFo"
         }
       },
       "package": {
-        "individually": true,
+        "patterns": [
+          "!node_modules/**",
+          "!nodejs/**",
+          "!src/**/*.test.js"
+        ],
         "artifactsS3KeyDirname": "serverless/background-remover-api/dev/code-artifacts",
-        "deploymentBucket": "serverless-framework-deployments-us-east-1-bc9391fd-54d0",
-        "artifactDirectoryName": "serverless/background-remover-api/dev/1773953023435-2026-03-19T20:43:43.435Z"
+        "deploymentBucket": "serverless-framework-deployments-us-east-1-bc9391fd-54d0"
+      },
+      "custom": {
+        "esbuild": {
+          "bundle": true,
+          "platform": "node",
+          "target": "node22",
+          "external": [
+            "@imgly/background-removal-node",
+            "onnxruntime-node"
+          ],
+          "installExtraArgs": [
+            "--omit=dev"
+          ],
+          "packager": "npm"
+        }
+      },
+      "plugins": [
+        "serverless-esbuild"
+      ],
+      "build": {
+        "esbuild": false
       }
     },
     "provider": {
       "name": "aws",
-      "runtime": "nodejs20.x",
+      "runtime": "nodejs22.x",
       "region": "us-east-1",
+      "architecture": "x86_64",
+      "memorySize": 2048,
       "stage": "dev",
       "versionFunctions": true,
       "compiledCloudFormationTemplate": {
@@ -416,18 +437,16 @@
             "Properties": {
               "Code": {
                 "S3Bucket": "serverless-framework-deployments-us-east-1-bc9391fd-54d0",
-                "S3Key": "serverless/background-remover-api/dev/1773953023435-2026-03-19T20:43:43.435Z/background-remover-api-api.zip"
+                "S3Key": "serverless/background-remover-api/dev/1774105154116-2026-03-21T14:59:14.116Z/background-remover-api.zip"
               },
               "Handler": "backend/src/app.handler",
-              "Runtime": "nodejs20.x",
+              "Runtime": "nodejs22.x",
               "FunctionName": "background-remover-api-dev-api",
-              "MemorySize": 1024,
+              "MemorySize": 2048,
               "Timeout": 6,
-              "Environment": {
-                "Variables": {
-                  "NODE_OPTIONS": "--enable-source-maps"
-                }
-              },
+              "Architectures": [
+                "x86_64"
+              ],
               "Role": {
                 "Fn::GetAtt": [
                   "IamRoleLambdaExecution",
@@ -439,14 +458,14 @@
               "ApiLogGroup"
             ]
           },
-          "ApiLambdaVersion0x9OrEmCuY9wJLe0QqDlAysFIXd4cWYsK4XJcYE": {
+          "ApiLambdaVersionj8rtoUTjFLsOHEAhSkiJGq5Ezurq7K5vp8DbOsDgFo": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "ApiLambdaFunction"
               },
-              "CodeSha256": "Ipjk35SQNVhMwEbtq1NrZWGEQK9VrAd9zrRfmZjZqug="
+              "CodeSha256": "4YM92KqYLXqIxkBSRHnW1Ras8XfxQKOBtcBc+51L9K0="
             }
           },
           "HttpApi": {
@@ -555,7 +574,7 @@
           "ApiLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "ApiLambdaVersion0x9OrEmCuY9wJLe0QqDlAysFIXd4cWYsK4XJcYE"
+              "Ref": "ApiLambdaVersionj8rtoUTjFLsOHEAhSkiJGq5Ezurq7K5vp8DbOsDgFo"
             },
             "Export": {
               "Name": "sls-background-remover-api-dev-ApiLambdaFunctionQualifiedArn"
@@ -601,14 +620,14 @@
     },
     "dashboard": {
       "isEnabledForService": false,
-      "requiredAuthentication": true,
+      "requiredAuthentication": false,
       "orgFeaturesInUse": null,
       "orgObservabilityIntegrations": null,
       "serviceAppId": null,
       "serviceProvider": null,
       "instanceParameters": null
     },
-    "serviceRawFile": "service: background-remover-api\n\nprovider:\n  name: aws\n  runtime: nodejs20.x # Latest stable version\n  region: us-east-1\n\nfunctions:\n  api:\n    handler: backend/src/app.handler # Points to your exported handler in app.js\n    events:\n      - httpApi: '*'   # Catches all HTTP traffic and routes it to Express\n\npackage: \n  individually: true",
+    "serviceRawFile": "service: background-remover-api\n\nprovider:\n  name: aws\n  runtime: nodejs22.x # Latest stable version\n  region: us-east-1\n  architecture: x86_64 # CRITICAL: Binaries are OS-specific. \n  memorySize: 2048     # ONNX needs RAM\n  # timeout: 30          # Background removal takes time\n\nfunctions:\n  api:\n    handler: backend/src/app.handler # Points to your exported handler in app.js\n    events:\n      - httpApi: '*'   # Catches all HTTP traffic and routes it to Express\n\npackage: \n  patterns:\n    - '!node_modules/**'\n    - '!nodejs/**'\n    - '!src/**/*.test.js' # Ignore all test files\n\ncustom:\n  esbuild:\n    bundle: true\n    platform: 'node'\n    target: 'node22'\n    # 1. Tell the bundler to leave this package alone\n    external:\n      - '@imgly/background-removal-node'\n      - 'onnxruntime-node'\n    # 2. Tell the plugin to install these as real node_modules in the zip\n    installExtraArgs:\n      - '--omit=dev'\n    # 3. Use npm/yarn to handle the external install\n    packager: npm\n\nplugins:\n  - serverless-esbuild\n\nbuild:\n  esbuild: false",
     "command": [
       "deploy"
     ],
@@ -621,12 +640,12 @@
     "serviceProviderAwsCfStackName": "background-remover-api-dev",
     "serviceProviderAwsCfStackId": "arn:aws:cloudformation:us-east-1:446103798934:stack/background-remover-api-dev/65c31a40-23d4-11f1-9439-12277e1e1399",
     "serviceProviderAwsCfStackCreated": "2026-03-19T20:44:17.386Z",
-    "serviceProviderAwsCfStackUpdated": null,
-    "serviceProviderAwsCfStackStatus": "CREATE_COMPLETE",
+    "serviceProviderAwsCfStackUpdated": "2026-03-21T10:01:26.435Z",
+    "serviceProviderAwsCfStackStatus": "UPDATE_COMPLETE",
     "serviceProviderAwsCfStackOutputs": [
       {
         "OutputKey": "ApiLambdaFunctionQualifiedArn",
-        "OutputValue": "arn:aws:lambda:us-east-1:446103798934:function:background-remover-api-dev-api:1",
+        "OutputValue": "arn:aws:lambda:us-east-1:446103798934:function:background-remover-api-dev-api:2",
         "Description": "Current Lambda function version",
         "ExportName": "sls-background-remover-api-dev-ApiLambdaFunctionQualifiedArn"
       },
@@ -741,18 +760,16 @@
           "Properties": {
             "Code": {
               "S3Bucket": "serverless-framework-deployments-us-east-1-bc9391fd-54d0",
-              "S3Key": "serverless/background-remover-api/dev/1773953023435-2026-03-19T20:43:43.435Z/background-remover-api-api.zip"
+              "S3Key": "serverless/background-remover-api/dev/1774105154116-2026-03-21T14:59:14.116Z/background-remover-api.zip"
             },
             "Handler": "backend/src/app.handler",
-            "Runtime": "nodejs20.x",
+            "Runtime": "nodejs22.x",
             "FunctionName": "background-remover-api-dev-api",
-            "MemorySize": 1024,
+            "MemorySize": 2048,
             "Timeout": 6,
-            "Environment": {
-              "Variables": {
-                "NODE_OPTIONS": "--enable-source-maps"
-              }
-            },
+            "Architectures": [
+              "x86_64"
+            ],
             "Role": {
               "Fn::GetAtt": [
                 "IamRoleLambdaExecution",
@@ -764,14 +781,14 @@
             "ApiLogGroup"
           ]
         },
-        "ApiLambdaVersion0x9OrEmCuY9wJLe0QqDlAysFIXd4cWYsK4XJcYE": {
+        "ApiLambdaVersionj8rtoUTjFLsOHEAhSkiJGq5Ezurq7K5vp8DbOsDgFo": {
           "Type": "AWS::Lambda::Version",
           "DeletionPolicy": "Retain",
           "Properties": {
             "FunctionName": {
               "Ref": "ApiLambdaFunction"
             },
-            "CodeSha256": "Ipjk35SQNVhMwEbtq1NrZWGEQK9VrAd9zrRfmZjZqug="
+            "CodeSha256": "4YM92KqYLXqIxkBSRHnW1Ras8XfxQKOBtcBc+51L9K0="
           }
         },
         "HttpApi": {
@@ -880,7 +897,7 @@
         "ApiLambdaFunctionQualifiedArn": {
           "Description": "Current Lambda function version",
           "Value": {
-            "Ref": "ApiLambdaVersion0x9OrEmCuY9wJLe0QqDlAysFIXd4cWYsK4XJcYE"
+            "Ref": "ApiLambdaVersionj8rtoUTjFLsOHEAhSkiJGq5Ezurq7K5vp8DbOsDgFo"
           },
           "Export": {
             "Name": "sls-background-remover-api-dev-ApiLambdaFunctionQualifiedArn"

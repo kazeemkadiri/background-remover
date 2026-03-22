@@ -19,17 +19,20 @@
   "repository": "https://github.com/kazeemkadiri/background-remover.git",
   "license": "MIT",
   "dependencies": {
+    "@imgly/background-removal-node": "^1.4.5",
     "@types/express-fileupload": "^1.5.1",
     "argon2": "^0.40.1",
     "axios": "^1.13.6",
     "cors": "^2.8.6",
     "dotenv": "^16.6.1",
+    "esbuild": "^0.27.4",
     "express": "^4.22.0",
     "express-async-handler": "^1.2.0",
     "express-fileupload": "^1.5.2",
     "jsonwebtoken": "^9.0.3",
     "mongoose": "^8.20.1",
-    "serverless-http": "^4.0.0"
+    "node-loader": "^2.1.0",
+    "save-dev": "^0.0.1-security"
   },
   "devDependencies": {
     "@types/cors": "^2.8.19",
@@ -43,6 +46,7 @@
     "concurrently": "^8.2.2",
     "eslint": "^9.39.2",
     "jest": "^30.3.0",
+    "node-loader": "^2.1.0",
     "prettier": "3.2.5",
     "supertest": "^7.2.2",
     "ts-jest": "^29.4.6",

@@ -1,4 +1,3 @@
-import serverless from 'serverless-http';
 import fileUpload from 'express-fileupload';
 import cors from 'cors';
 
@@ -34,16 +33,12 @@ app.get('/', (req, res) => {
 
 app.use('/api', bgRemoverRouter);
 
-const PORT = 5000;
+const PORT = process.env.PORT ||5000;
 
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });
 
 (global as any).__SERVER__ = app; // Store server reference for teardown
-
-// const handler = serverless(app); // Export the serverless handler for AWS Lambda
-
-// export { handler };
 
 export default app;
