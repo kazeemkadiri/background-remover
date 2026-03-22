@@ -10,8 +10,9 @@ dotenv.config();
 const app: Express = express();
 
 app.use(cors({
-    origin: 'http://localhost:3000', // Adjust this to your frontend URL
-    optionsSuccessStatus: 200
+    origin: 'https://background-remover-six-iota.vercel.app/', // Adjust this to your frontend URL
+    preflightContinue: true,
+    optionsSuccessStatus: 200,
 }));
 
 app.use(fileUpload({
