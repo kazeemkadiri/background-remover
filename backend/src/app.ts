@@ -10,15 +10,15 @@ dotenv.config();
 const app: Express = express();
 
 app.use(cors({
-    origin: '*', // Allow all origins for testing; adjust in production
-    methods: ['GET', 'POST', 'OPTIONS'],
+    origin: 'http://localhost:3000', // Adjust this to your frontend URL
+    optionsSuccessStatus: 200
 }));
 
 app.use(fileUpload({
     limits: { fileSize: 50 * 1024 * 1024 },
     useTempFiles: true,
     tempFileDir: '/tmp/',
-    safeFileNames: true, 
+    safeFileNames: true,
     preserveExtension: true
 }));
 
