@@ -1,3 +1,18 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Roboto;
+}
+
+.site-bg{
+    background: #0b5470;
+    background: radial-gradient(circle, rgba(11, 84, 112, 1) 0%, rgba(171, 206, 219, 1) 33%, rgba(168, 204, 224, 1) 66%, rgba(11, 84, 112, 1) 100%);
+    max-width: 1440px;
+    height: 100vh;
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+}
