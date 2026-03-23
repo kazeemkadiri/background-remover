@@ -11,7 +11,7 @@ describe("POST /request-bg-removal", () => {
     });
 
     it("should return 200 and a task id", async () => {
-        jest.spyOn(brController, 'postRequiredData').mockResolvedValue({ message: "Processing started", transparentImage: "54321" });
+        jest.spyOn(brController, 'postRequiredData').mockResolvedValue({ message: "Processing started", imagePath: "54321" });
 
         const response = await request(app)
             .post('/api/request-bg-removal')

@@ -5,6 +5,7 @@ import express, { Express } from "express";
 import bgRemoverRouter from "./routes/background-remover.route";
 
 import dotenv from 'dotenv';
+import path from 'node:path';
 dotenv.config();
 
 const app: Express = express();
@@ -25,8 +26,14 @@ app.use(fileUpload({
 
 app.use(express.json({ limit: '10mb' })); // To handle large base64 image data
 
-app.get('/', (req, res) => {
-    res.send('Hello World from Kazeem\'s SAAS!. This is the backend server for the Background Image Remover application.');
+app.use(express.static(path.join(__dirname, 'build'))); // Serve static files from the 'build' directory
+
+app.use('/out', express.static(path.join(__dirname, 'out'))); // Serve static files from the 'out' directory
+
+app.get('*', (req, res) => {
+    console.log('Received request for /', path.join(__dirname, 'build', 'index.html'));
+    res.sendFile(path.join(__dirname, 'build', 'index.html')); // Serve the frontend application
+    // res.end();
 });
 
 app.use('/api', bgRemoverRouter);
