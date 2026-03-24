@@ -14,9 +14,9 @@ describe("BRService", () => {
         const mockResponse = { data: { id: "12345" } };
         jest.spyOn(require('axios'), 'post').mockResolvedValue(mockResponse);
 
-        const result = await service.doRemoveBackground({ imageData: Buffer.from("test"), ip: "192.168.1.1" });
+        const result = await service.doRemoveBackground({ imagePath: "test", ip: "192.168.1.1" });
 
-        expect(result).toStrictEqual({"message": "Processing started", "taskId": "12345"});
+        expect(result).toStrictEqual({"message": "Processing started", "taskId": "12345", "imagePath": expect.any(String)});
 
     });
 });

@@ -16,3 +16,48 @@ body {
     background-repeat: no-repeat;
     background-size: 100% 100%;
 }
+
+.download-btn{
+    background-color: orange;
+    color: white;
+    padding: 1rem 3rem;
+    border-radius: 10px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    font-weight: bold;
+    margin-bottom: 1rem;
+}
+
+.download-btn:hover{
+    background-color: #e99802;
+    cursor: pointer;
+}
+
+.handle {
+  width: 4px;
+  height: 100%;
+  background: #d9cece;
+  /* position: absolute; */
+  /* right: 0; */
+  top: 0;
+  cursor: ew-resize;
+}
+
+.handle:hover {
+  background: #d9cece;
+}
+
+.box {
+  /* position: relative; */
+  width: 100%;
+  height: 100%; /* Static height */
+  /* background-color: #3498db; */
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* padding: 20px; */
+  border-radius: 8px;
+  user-select: none; /* Prevents highlighting text while dragging */
+}

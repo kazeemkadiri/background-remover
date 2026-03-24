@@ -7,6 +7,7 @@ export default function useApiHandler() {
         return customAxios.post('/request-bg-removal', formData, {
             headers: {
                 'Content-Type': 'multipart/form-data',
+                
             },
             signal: abortSignal,
         });

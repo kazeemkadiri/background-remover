@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Upload, File, X, CheckCircle } from 'lucide-react'; // Optional: for icons
 import useApiHandler from '../../hooks/useApiHandler';
 
+
 const FileUploader = () => {
   const [isDragging, setIsDragging] = useState(false);
   const [file, setFile] = useState<null | File>(null);
@@ -10,31 +11,54 @@ const FileUploader = () => {
   const abortController = new AbortController(); // For potential upload cancellation
   const { uploadImage } = useApiHandler();
 
-    // Commence file upload process (e.g., send to backend)
-    useEffect(() => {
-        if (file) {
-            console.log("File ready for upload:", file);
+  // Commence file upload process (e.g., send to backend)
+  useEffect(() => {
+    if (file) {
+      console.log("File ready for upload:", file);
 
-            doFileUpload();
-        }
-    }, [file]);
-
-    const doFileUpload = async () => {
-        try {
-            const formData = new FormData();
-            formData.append('image', file as Blob); // Append the file to the form data
-
-            const response = await uploadImage(formData, abortController.signal);
-            
-            if (!response.status || response.status >= 400) {
-                throw new Error(`Upload failed: ${response.statusText}`);
-            }
-
-            console.log("Upload successful, server response:", response.data);
-        } catch (error) {
-            console.error("Error during file upload:", error);
-        }
+      doFileUpload();
     }
+  }, [file]);
+
+  const doFileUpload = async () => {
+    try {
+      const formData = new FormData();
+      formData.append("image", file as Blob);
+
+      const response = await uploadImage(formData, abortController.signal);
+
+      const { imagePath } = response.data;
+
+      // 2. Create a temporary anchor element
+      const link = document.createElement('div');
+      link.className = "download-btn";
+      link.innerText = "Download Image";
+
+      link.addEventListener('click', () => {
+        const link = document.createElement('a');
+
+        // 2. Set the URL and the 'download' attribute
+        link.href = `${import.meta.env.VITE_BASE_URL}${imagePath}`;
+        link.download = 'output.png'; // This suggests the filename to the browser
+
+        // 3. Append to body (required for Firefox)
+        document.body.appendChild(link);
+
+        // 4. Trigger the click
+        link.click();
+
+        // 5. Clean up
+        document.body.removeChild(link);
+      });
+
+      // 4. Append to doc, click it, and remove it
+      document.querySelector(".download-button")!.appendChild(link);
+      // link.click();
+      // link.parentNode!.removeChild(link);
+    } catch (err) {
+      console.log("Error during image upload", err);
+    }
+  }
 
   const handleDragOver = (e: { preventDefault: () => void; }) => {
     e.preventDefault();
@@ -52,34 +76,35 @@ const FileUploader = () => {
     if (droppedFile) setFile(droppedFile);
   };
 
-  const handleFileSelect = (e: { target: { files: any[]; }} | any) => {
+  const handleFileSelect = (e: { target: { files: any[]; } } | any) => {
     const selectedFile = e.target.files[0];
     if (selectedFile) setFile(selectedFile);
   };
 
   return (
     <div className="flex flex-col items-center justify-center w-full max-w-md mx-auto p-6">
+      <section className='download-button w-full'></section>
       <div
         onDragOver={handleDragOver}
         onDragLeave={handleDragLeave}
         onDrop={handleDrop}
         onClick={() => {
-            if(fileInputRef.current){
-                (fileInputRef.current as HTMLInputElement).click();
-            }
+          if (fileInputRef.current) {
+            (fileInputRef.current as HTMLInputElement).click();
+          }
         }}
         className={`
           relative w-full h-64 border-2 border-dashed rounded-xl flex flex-col items-center justify-center cursor-pointer transition-all duration-200
-          ${isDragging 
-            ? 'border-blue-500 bg-blue-50 scale-[1.02]' 
+          ${isDragging
+            ? 'border-blue-500 bg-blue-50 scale-[1.02]'
             : 'border-gray-300 bg-gray-50 hover:bg-gray-100 hover:border-gray-400'}
         `}
       >
-        <input 
-          type="file" 
-          className="hidden" 
-          ref={fileInputRef} 
-          onChange={handleFileSelect} 
+        <input
+          type="file"
+          className="hidden"
+          ref={fileInputRef}
+          onChange={handleFileSelect}
         />
 
         {!file ? (
@@ -99,7 +124,7 @@ const FileUploader = () => {
               {file.name}
             </p>
             <p className="text-xs text-gray-500">{(file.size / 1024).toFixed(1)} KB</p>
-            <button 
+            <button
               onClick={(e) => { e.stopPropagation(); setFile(null); }}
               className="mt-4 text-xs font-bold text-red-500 hover:text-red-700 uppercase tracking-wider"
             >
@@ -108,12 +133,14 @@ const FileUploader = () => {
           </div>
         )}
       </div>
-      
-      {file && (
+
+
+
+      {/* {file && (
         <button className="w-full mt-4 bg-blue-600 hover:bg-blue-700 text-white font-medium py-2.5 rounded-lg transition-colors flex items-center justify-center gap-2">
           Upload to Cloud
         </button>
-      )}
+      )} */}
     </div>
   );
 };
