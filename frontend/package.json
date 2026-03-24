@@ -6,7 +6,7 @@
   "license": "MIT",
   "scripts": {
     "install:frontend": "npm install --legacy-peer-deps",
-    "start": "vite",
+    "start": "vite --host",
     "build": "tsc && vite build && cp -r build ../dist",
     "preview": "vite preview",
     "check-types": "tsc",
